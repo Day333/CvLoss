@@ -71,8 +71,9 @@ def parse_file(filepath):
     return pd.DataFrame(results)
 
 
-def analyze(df: pd.DataFrame, wide_mode: str = "full"):
+def analyze(df: pd.DataFrame, wide_mode: str = "full", metric: str = "mse"):
     assert wide_mode in {"full", "avg"}, "wide_mode must be 'full' or 'avg'"
+    assert metric in {"mse", "mae", "mse+mae"}, "metric must be 'mse', 'mae', or 'mse+mae'"
 
     for dataset in sorted(df["dataset"].unique()):
 
@@ -95,7 +96,7 @@ def analyze(df: pd.DataFrame, wide_mode: str = "full"):
             # ============================================================
             # Global best per pred_len
             # ============================================================
-            print("\nGlobal Best per pred_len (across patch & beta):")
+            print(f"\nGlobal Best per pred_len (across patch & beta, by {metric}):")
 
             best_rows = []
 
@@ -104,13 +105,19 @@ def analyze(df: pd.DataFrame, wide_mode: str = "full"):
                 if df_pl.empty:
                     continue
 
-                idx = df_pl["mse"].idxmin()
+                if metric == "mse":
+                    target_col = df_pl["mse"]
+                elif metric == "mae":
+                    target_col = df_pl["mae"]
+                else:
+                    target_col = df_pl["mse"] + df_pl["mae"]
+
+                idx = target_col.idxmin()
                 best = df_pl.loc[idx]
 
                 print(
                     f"pred_len={pl} → "
-                    f"mse={best['mse']:.6f}, "
-                    f"mae={best['mae']:.6f}, "
+                    f"target({metric})={target_col.loc[idx]:.6f} (mse={best['mse']:.6f}, mae={best['mae']:.6f}), "
                     f"patch={best['patch']}, "
                     f"beta={best['beta']}"
                 )
@@ -119,7 +126,7 @@ def analyze(df: pd.DataFrame, wide_mode: str = "full"):
 
             if best_rows:
                 best_df = pd.DataFrame(best_rows)
-                print("\nAverage of best MSE across pred_len:")
+                print(f"\nAverage of best models across pred_len:")
                 print(f"avg_best_mse = {best_df['mse'].mean():.6f}")
                 print(f"avg_best_mae = {best_df['mae'].mean():.6f}")
 
@@ -182,20 +189,44 @@ def analyze(df: pd.DataFrame, wide_mode: str = "full"):
                 print(to_print.to_string())
 
                 # best beta per pred_len
-                print("\nBest beta per pred_len (by MSE):")
+                print(f"\nBest beta per pred_len (by {metric}):")
                 for pl in pred_list:
-                    col = f"mse_{pl}"
-                    series = combined[col].dropna()
-                    if series.empty:
+                    col_mse = f"mse_{pl}"
+                    col_mae = f"mae_{pl}"
+                    
+                    # 动态选择评判标准 2
+                    if metric == "mse":
+                        target_series = combined[col_mse]
+                    elif metric == "mae":
+                        target_series = combined[col_mae]
+                    else:
+                        target_series = combined[col_mse] + combined[col_mae]
+                        
+                    target_series = target_series.dropna()
+                    if target_series.empty:
                         continue
-                    best_beta = series.idxmin()
-                    best_val = series.min()
-                    print(f"pred_len={pl} → beta={best_beta}, mse={best_val:.6f}")
+                        
+                    best_beta = target_series.idxmin()
+                    best_val = target_series.min()
+                    best_mse = combined.loc[best_beta, col_mse]
+                    best_mae = combined.loc[best_beta, col_mae]
+                    
+                    print(f"pred_len={pl} → beta={best_beta}, target({metric})={best_val:.6f} (mse={best_mse:.6f}, mae={best_mae:.6f})")
 
-                best_global = combined["avg_mse"].idxmin()
-                print("\nOverall best beta (by avg_mse):")
+                if metric == "mse":
+                    target_global = combined["avg_mse"]
+                elif metric == "mae":
+                    target_global = combined["avg_mae"]
+                else:
+                    target_global = combined["avg_mse"] + combined["avg_mae"]
+                    
+                best_global = target_global.idxmin()
+                best_global_val = target_global.min()
+                
+                print(f"\nOverall best beta (by avg_{metric}):")
                 print(
                     f"beta={best_global}, "
+                    f"target({metric})={best_global_val:.6f}, "
                     f"avg_mse={combined.loc[best_global, 'avg_mse']:.6f}, "
                     f"avg_mae={combined.loc[best_global, 'avg_mae']:.6f}, "
                     f"coverage={combined.loc[best_global, 'coverage']}"
@@ -214,6 +245,14 @@ def main():
         choices=["full", "avg"],
         help="Wide table output: 'full' prints per-pred columns; 'avg' prints only avg_mse/avg_mae/coverage.",
     )
+
+    parser.add_argument(
+        "--metric",
+        type=str,
+        default="mse",
+        choices=["mse", "mae", "mse+mae"],
+        help="Evaluation metric for selecting the best model.",
+    )
     args = parser.parse_args()
 
     df = parse_file(args.file)
@@ -222,7 +261,7 @@ def main():
         print("No valid addloss experiments found.")
         return
 
-    analyze(df, wide_mode=args.wide_mode)
+    analyze(df, wide_mode=args.wide_mode, metric=args.metric)
 
 
 if __name__ == "__main__":

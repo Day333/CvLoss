@@ -103,6 +103,11 @@ class Exp_Long_Term_Forecast(Exp_Basic):
             iter_count = 0
             train_loss = []
 
+            ##################### ADD 1 #####################
+            fwd_times = []
+            bwd_times = []
+            ##################### ADD 1 #####################
+            
             self.model.train()
             epoch_time = time.time()
             for i, (batch_x, batch_y, batch_x_mark, batch_y_mark) in enumerate(train_loader):
@@ -121,6 +126,12 @@ class Exp_Long_Term_Forecast(Exp_Basic):
                 dec_inp = torch.zeros_like(batch_y[:, -self.args.pred_len:, :]).float()
                 dec_inp = torch.cat([batch_y[:, :self.args.label_len, :], dec_inp], dim=1).float().to(self.device)
 
+                ##################### ADD 2 #####################
+                if self.args.use_gpu:
+                    torch.cuda.synchronize()
+                t_fwd_start = time.time()
+                ##################### ADD 2 #####################
+                
                 # encoder - decoder
                 if self.args.use_amp:
                     with torch.cuda.amp.autocast():
@@ -279,7 +290,6 @@ class Exp_Long_Term_Forecast(Exp_Basic):
                     idx_i = torch.randint(0, N, (num_pairs,), device=device)
                     idx_j = torch.randint(0, N, (num_pairs,), device=device)
                     
-                    # 禁止同变量patch间交互
                     patch_i = idx_i // D
                     patch_j = idx_j // D
 
@@ -327,6 +337,14 @@ class Exp_Long_Term_Forecast(Exp_Basic):
                 else:
                     loss = self.args.alpha_add_loss * loss_tmp + self.args.beta_add_loss * loss_add
                 ##################### add #####################
+                
+                ##################### ADD 3 #####################
+                if self.args.use_gpu:
+                    torch.cuda.synchronize()
+                fwd_times.append((time.time() - t_fwd_start) * 1000)
+                
+                t_bwd_start = time.time()
+                ##################### ADD 3 #####################
 
                 train_loss.append(loss.item())
 
@@ -346,7 +364,19 @@ class Exp_Long_Term_Forecast(Exp_Basic):
                     loss.backward()
                     model_optim.step()
 
+                ##################### ADD 4 #####################
+                if self.args.use_gpu:
+                    torch.cuda.synchronize()
+                bwd_times.append((time.time() - t_bwd_start) * 1000)
+                ##################### ADD 4 #####################
+                
             print("Epoch: {} cost time: {}".format(epoch + 1, time.time() - epoch_time))
+            
+            ##################### ADD 5 #####################
+            print(f"Forward_Phase_Avg_ms: {np.mean(fwd_times):.4f}")
+            print(f"Backward_Phase_Avg_ms: {np.mean(bwd_times):.4f}")
+            ##################### ADD 5 #####################
+            
             train_loss = np.average(train_loss)
             vali_loss = self.vali(vali_data, vali_loader, criterion)
             test_loss = self.vali(test_data, test_loader, criterion)
@@ -441,9 +471,9 @@ class Exp_Long_Term_Forecast(Exp_Basic):
         print('test shape:', preds.shape, trues.shape)
 
         # result save
-        # folder_path = './results/' + setting + '/'
-        # if not os.path.exists(folder_path):
-        #     os.makedirs(folder_path)
+        folder_path = './results/' + setting + '/'
+        if not os.path.exists(folder_path):
+            os.makedirs(folder_path)
 
         mae, mse, rmse, mape, mspe = metric(preds, trues)
         print('mse:{}, mae:{}'.format(mse, mae))
@@ -455,8 +485,8 @@ class Exp_Long_Term_Forecast(Exp_Basic):
         f.close()
 
         # np.save(folder_path + 'metrics.npy', np.array([mae, mse, rmse, mape, mspe]))
-        # np.save(folder_path + 'pred.npy', preds)
-        # np.save(folder_path + 'true.npy', trues)
+        np.save(folder_path + 'pred.npy', preds)
+        np.save(folder_path + 'true.npy', trues)
 
         self.profile_model(test_loader)
         

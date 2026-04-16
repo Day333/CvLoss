@@ -1,6 +1,8 @@
 import argparse
 import torch
 from experiments.exp_long_term_forecasting import Exp_Long_Term_Forecast
+# from experiments.exp_long_term_forecasting_random import Exp_Long_Term_Forecast
+
 from experiments.exp_long_term_forecasting_partial import Exp_Long_Term_Forecast_Partial
 import random
 import numpy as np

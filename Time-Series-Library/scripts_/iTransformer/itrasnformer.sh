@@ -5,9 +5,9 @@ set -e
 # GPU & Concurrency Config
 ########################################
 
-MAX_JOBS=2
-AVAILABLE_GPUS=(1)
-MAX_RETRIES=1
+MAX_JOBS=4
+AVAILABLE_GPUS=(1 3 4 6)
+MAX_RETRIES=0
 NUM_GPUS=${#AVAILABLE_GPUS[@]}
 
 mkdir -p logs
@@ -17,7 +17,7 @@ gpu_ptr=0
 # Basic config
 ########################################
 
-MODEL_NAME=DLinear          # change to PatchTST if needed
+MODEL_NAME=iTransformer
 SEQ_LEN=96
 PRED_LENS=(96 192 336 720)
 
@@ -126,10 +126,8 @@ get_model_args() {
   fi
 
   if [[ "${MODEL_NAME}" == "iTransformer" ]]; then
-    echo "--fc_dropout 0.0 \
-          --head_dropout 0.0 \
-          --d_model 64 \
-          --d_ff 128 \
+    echo "--d_model 128 \
+          --d_ff 256 \
           --n_heads 1 \
           --dropout 0.0"
     return

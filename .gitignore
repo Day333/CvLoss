@@ -21,3 +21,9 @@ Time-Series-Library/dataset
 PDF/dataset
 CFPT/dataset
 */logs*/
+*/heatmap_vis/
+iTransformer/calculate_ccc.py
+iTransformer/visualize_cvl_heatmaps.py
+iTransformer/extract_inference.py
+iTransformer/full.csv
+*/heatmap_vis_oo

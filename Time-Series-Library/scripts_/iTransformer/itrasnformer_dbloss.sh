@@ -17,7 +17,7 @@ gpu_ptr=0
 # Basic config
 ########################################
 
-MODEL_NAME=iTransformer          # change to PatchTST if needed
+MODEL_NAME=iTransformer
 SEQ_LEN=96
 PRED_LENS=(96 192 336 720)
 

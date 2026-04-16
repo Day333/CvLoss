@@ -8,12 +8,11 @@ import random
 import numpy as np
 
 if __name__ == '__main__':
-    fix_seed = 2021
-    random.seed(fix_seed)
-    torch.manual_seed(fix_seed)
-    np.random.seed(fix_seed)
 
     parser = argparse.ArgumentParser(description='PatchTST')
+
+    # random seed
+    parser.add_argument('--random_seed', type=int, default=2024, help='random seed')
 
     # basic config
     parser.add_argument('--task_name', type=str, required=True, default='long_term_forecast',
@@ -147,7 +146,12 @@ if __name__ == '__main__':
         device_ids = args.devices.split(',')
         args.device_ids = [int(id_) for id_ in device_ids]
         args.gpu = args.device_ids[0]
-
+    
+    # random seed
+    fix_seed = args.random_seed
+    random.seed(fix_seed)
+    torch.manual_seed(fix_seed)
+    np.random.seed(fix_seed)
     print('Args in experiment:')
     print_args(args)
 

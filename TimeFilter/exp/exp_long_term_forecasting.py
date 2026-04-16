@@ -34,7 +34,10 @@ class Exp_Long_Term_Forecast(Exp_Basic):
         return model_optim
 
     def _select_criterion(self):
-        criterion = nn.MSELoss()
+        if self.args.loss == 'MSE':
+            criterion = nn.MSELoss()
+        else:
+            criterion = nn.L1Loss()
         return criterion
     
     def _get_mask(self):

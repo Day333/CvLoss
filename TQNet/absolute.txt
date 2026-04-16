@@ -1,0 +1,84 @@
+ecl: 
+==================================================
+Training Finished!
+Final Weight for MSE (L_tmp): 8.110174
+Final Weight for Add Loss (L_add): 3.038474
+Alpha is 2.8670086786281868
+==================================================
+etth1:
+==================================================
+Training Finished!
+Final Weight for MSE (L_tmp): 1.270585
+Final Weight for Add Loss (L_add): 1.265696
+Alpha is 1.176052802439892
+==================================================
+etth2:
+==================================================
+Training Finished!
+Final Weight for MSE (L_tmp): 1.208014
+Final Weight for Add Loss (L_add): 1.200156
+Alpha is 1.0878038741809466
+==================================================
+ettm1:
+==================================================
+Training Finished!
+Final Weight for MSE (L_tmp): 2.357160
+Final Weight for Add Loss (L_add): 1.983110
+Alpha is 1.6184825141038468
+==================================================
+ettm2:
+==================================================
+Training Finished!
+Final Weight for MSE (L_tmp): 2.175878
+Final Weight for Add Loss (L_add): 2.020942
+Alpha is 1.503141498190056
+==================================================
+pems03:
+==================================================
+Training Finished!
+Final Weight for MSE (L_tmp): 21.711782
+Final Weight for Add Loss (L_add): 4.829297
+Alpha is 4.470952477464911
+==================================================
+pems04:
+==================================================
+Training Finished!
+Final Weight for MSE (L_tmp): 18.012722
+Final Weight for Add Loss (L_add): 4.395643
+Alpha is 3.947504752263707
+==================================================
+pems07:
+==================================================
+Training Finished!
+Final Weight for MSE (L_tmp): 22.831268
+Final Weight for Add Loss (L_add): 4.956970
+Alpha is 4.537832338600368
+==================================================
+pems08:
+==================================================
+Training Finished!
+Final Weight for MSE (L_tmp): 17.138006
+Final Weight for Add Loss (L_add): 4.282841
+Alpha is 3.8971513467066052
+==================================================
+solar:
+==================================================
+Training Finished!
+Final Weight for MSE (L_tmp): 6.991904
+Final Weight for Add Loss (L_add): 3.461730
+Alpha is 2.7252640595339463
+==================================================
+traffic:
+==================================================
+Training Finished!
+Final Weight for MSE (L_tmp): 4.680418
+Final Weight for Add Loss (L_add): 3.065259
+Alpha is 2.8559652240860545
+==================================================
+wether:
+==================================================
+Training Finished!
+Final Weight for MSE (L_tmp): 2.488708
+Final Weight for Add Loss (L_add): 2.286431
+Alpha is 2.1152902912870393
+==================================================
