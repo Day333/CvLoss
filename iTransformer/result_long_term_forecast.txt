@@ -1,0 +1,6 @@
+long_term_forecast_ETTh2_96_96_iTransformer_ETTh2_addlossNone_numpairsmax_patchlen16_alpha1.0_beta0.1  
+mse:0.3008940815925598, mae:0.34985440969467163
+
+long_term_forecast_ETTh2_96_96_iTransformer_ETTh2_addlossfcv_numpairsmax_patchlen3_alpha0.1_beta0.9  
+mse:0.296458899974823, mae:0.3430185616016388
+
