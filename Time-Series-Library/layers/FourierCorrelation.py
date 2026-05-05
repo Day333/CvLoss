@@ -1,6 +1,5 @@
 # coding=utf-8
-# author=maziqing
-# email=maziqing.mzq@alibaba-inc.com
+# Frequency-domain attention utilities.
 
 import numpy as np
 import torch

@@ -1,9 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-Created on Sun Jan  5 16:10:01 2025
-@author: Murad
-SISLab, USF
-mmurad@usf.edu
+Adapted WPMixer implementation.
 https://github.com/Secure-and-Intelligent-Systems-Lab/WPMixer
 """
 

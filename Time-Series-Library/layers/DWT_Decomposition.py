@@ -1,9 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-Created on Sun Jan  5
-@author: Murad
-SISLab, USF
-mmurad@usf.edu
+Adapted DWT decomposition utilities.
 https://github.com/Secure-and-Intelligent-Systems-Lab/WPMixer
 """
 
@@ -1255,8 +1252,8 @@ def reflect(x, minx, maxx):
     and *maxx*.  If *x* contains integers and *minx* and *maxx* are (integers +
     0.5), the ramps will have repeated max and min samples.
 
-    .. codeauthor:: Rich Wareham <rjw57@cantab.net>, Aug 2013
-    .. codeauthor:: Nick Kingsbury, Cambridge University, January 1999.
+    .. codeauthor:: Rich Wareham, Aug 2013
+    .. codeauthor:: Nick Kingsbury, January 1999.
 
     """
     x = np.asanyarray(x)

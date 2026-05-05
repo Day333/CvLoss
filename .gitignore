@@ -27,3 +27,4 @@ iTransformer/visualize_cvl_heatmaps.py
 iTransformer/extract_inference.py
 iTransformer/full.csv
 */heatmap_vis_oo
+.DS_Store

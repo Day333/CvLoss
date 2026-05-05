@@ -84,14 +84,6 @@ training parameters, feel free to add arguments to the
 shell scripts and play around. The full list of parameters
 can be seen in `run.py`.
 
-## Contact Us!
+## Contact
 
-This piece of code is written and maintained by 
-[Yunzhong Qiu](https://github.com/DigitalLifeYZQiu). 
-We thank [Haixu Wu](https://github.com/wuhaixu2016) and
-[Jiaxiang Dong](https://github.com/dongjiaxiang) for 
-insightful discussion and solid support.
-
-If you have difficulties or find bugs in our code, please
-contact us:
-- Email: qiuyz24@mails.tsinghua.edu.cn
+Contact information is intentionally omitted from this anonymous release.
