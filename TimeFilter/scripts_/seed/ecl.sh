@@ -5,12 +5,12 @@ GPU_ID=2
 model_name=TimeFilter
 patchlen=6
 
-# 定义需要测试的配置列表
+# Define test configurations.
 pred_lens=(96 192 336 720)
 seeds=(2020 2021 2022 2023 2024 2025 2026)
 loss_modes=("fcv" "None")
 
-# 创建/清空记录实验结果的 CSV 文件
+# Create result CSV.
 CSV_FILE="ecl_timefilter_seeds_results.csv"
 echo "pred_len,loss,seed,mse,mae" > $CSV_FILE
 
@@ -20,7 +20,7 @@ for loss in "${loss_modes[@]}"; do
   for seed in "${seeds[@]}"; do
     for pred_len in "${pred_lens[@]}"; do
         
-        # 1. 根据 pred_len 设定你提供的最佳 beta 值和 dropout
+        # Set beta and dropout by pred_len.
         if [[ "$pred_len" == "96" ]]; then
             beta=0.5
             dropout=0.5
@@ -38,14 +38,14 @@ for loss in "${loss_modes[@]}"; do
             exit 1
         fi
 
-        # 2. 计算 alpha (1.0 - beta)
+        # Compute alpha.
         alpha_add=$(awk "BEGIN {print 1.0 - $beta}")
         
         echo "======================================================"
         echo "Running ECL TimeFilter: pred_len=${pred_len}, loss=${loss}, seed=${seed}, patchlen=${patchlen}, beta=${beta}"
         echo "======================================================"
 
-        # 3. 根据 loss 类型设定额外参数
+        # Set extra args by loss type.
         if [[ "${loss}" == "fcv" ]]; then
             extra_args=(
                 --add_loss fcv
@@ -59,11 +59,11 @@ for loss in "${loss_modes[@]}"; do
             )
         fi
 
-        # 定义临时日志文件，以便实时输出并后续抓取指标
+        # Use a temp log for live output and metrics.
         TMP_LOG="tmp_run_ecl.log"
         model_id="ECL_${seq_len}_${pred_len}_${loss}_patch${patchlen}_b${beta}_seed${seed}"
 
-        # 4. 执行训练脚本
+        # Run training.
         CUDA_VISIBLE_DEVICES=$GPU_ID python -u run.py \
             --task_name long_term_forecast \
             --is_training 1 \
@@ -94,7 +94,7 @@ for loss in "${loss_modes[@]}"; do
             --itr 1 \
             "${extra_args[@]}" 2>&1 | tee $TMP_LOG
 
-        # 5. 使用 Python 正则提取测试集 mse 和 mae
+        # Extract test MSE and MAE with Python regex.
         METRICS=$(python3 -c "
 import re
 try:
@@ -114,10 +114,10 @@ except:
         
         echo "Extracted -> MSE: $MSE, MAE: $MAE"
         
-        # 写入 CSV 文件
+        # Write CSV row.
         echo "${pred_len},${loss},${seed},${MSE},${MAE}" >> $CSV_FILE
         
-        # 删除临时日志
+        # Remove temp log.
         rm -f $TMP_LOG
     done
   done
@@ -127,7 +127,7 @@ echo "======================================================"
 echo "All experiments finished! Generating LaTeX Table..."
 echo "======================================================"
 
-# 生成用于计算均值/方差并打印 LaTeX 表格的 Python 脚本
+# Generate the Python script for mean/std and LaTeX output.
 cat << 'EOF' > generate_latex_table.py
 import pandas as pd
 import numpy as np

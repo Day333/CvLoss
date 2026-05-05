@@ -117,7 +117,7 @@ done
 wait
 
 echo "====================================================="
-echo "所有测速任务执行完毕！(测试了 ${TEST_EPOCHS} 个 Epoch，已剔除 Epoch 1 的预热数据)"
-echo "数据已提取至 $CSV_FILE"
+echo "All timing tasks finished. Tested ${TEST_EPOCHS} epochs and skipped warmup epoch 1."
+echo "Data has been extracted to $CSV_FILE"
 echo "====================================================="
 cat "$CSV_FILE"

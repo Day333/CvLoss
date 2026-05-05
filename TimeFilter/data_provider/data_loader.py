@@ -523,7 +523,7 @@ class Dataset_Climate(Dataset):
         seq_x = self.data_x[s_begin:s_end]
         seq_y = self.data_y[r_begin:r_end]
 
-        # 注意没有seq_x_mark和seq_y_mark，用seq_x和seq_y代替
+        # Use seq_x and seq_y when mark arrays are unavailable.
         return seq_x, seq_y, seq_x[:, :4], seq_y[:, :4]
 
     def __len__(self):

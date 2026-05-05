@@ -3,7 +3,7 @@ set -e
 
 GPU_ID=4
 
-# 预测长度与对应的 patchlen, beta 参数
+# Prediction lengths with patchlen and beta.
 configs=(
   "96 3 0.5"
   "192 3 0.5"
@@ -11,11 +11,11 @@ configs=(
   "720 3 0.2"
 )
 
-# 需要遍历的随机种子和损失函数类型
+# Seeds and loss types.
 seeds=(2020 2021 2022 2023 2024 2025 2026)
 losses=("fcv" "None")
 
-# 创建/清空记录实验结果的 CSV 文件
+# Create result CSV.
 CSV_FILE="electricity_results_summary.csv"
 echo "pred_len,loss,seed,mse,mae" > $CSV_FILE
 
@@ -30,7 +30,7 @@ for loss in "${losses[@]}"; do
         echo "Running Electricity: pred_len=${pred_len}, loss=${loss}, seed=${seed}, patchlen=${patchlen}, beta=${beta}"
         echo "======================================================"
 
-        # 定义临时日志文件
+        # Use a temp log.
         TMP_LOG="tmp_run_elec.log"
 
         CUDA_VISIBLE_DEVICES=$GPU_ID python -u run.py \
@@ -56,7 +56,7 @@ for loss in "${losses[@]}"; do
             --alpha_add_loss ${alpha_add} \
             --beta_add_loss ${beta} | tee $TMP_LOG
 
-        # 使用 Python 正则提取测试集 mse 和 mae
+        # Extract test MSE and MAE with Python regex.
         METRICS=$(python3 -c "
 import re
 import sys
@@ -77,10 +77,10 @@ except Exception as e:
         
         echo "Extracted -> MSE: $MSE, MAE: $MAE"
         
-        # 写入 CSV 文件
+        # Write CSV row.
         echo "${pred_len},${loss},${seed},${MSE},${MAE}" >> $CSV_FILE
         
-        # 删除临时日志
+        # Remove temp log.
         rm -f $TMP_LOG
     done
   done

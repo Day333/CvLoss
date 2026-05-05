@@ -3,7 +3,7 @@ set -e
 
 GPU_ID=3
 
-# 预测长度与对应的 patchlen, beta 参数
+# Prediction lengths with patchlen and beta.
 configs=(
   "96 3 1.0"
   "192 3 1.0"
@@ -11,11 +11,11 @@ configs=(
   "720 3 0.5"
 )
 
-# 需要遍历的随机种子和损失函数类型
+# Seeds and loss types.
 seeds=(2020 2021 2022 2023 2024 2025 2026)
 losses=("fcv" "None")
 
-# 创建/清空记录实验结果的 CSV 文件
+# Create result CSV.
 CSV_FILE="weather_results_summary.csv"
 echo "pred_len,loss,seed,mse,mae" > $CSV_FILE
 
@@ -30,7 +30,7 @@ for loss in "${losses[@]}"; do
         echo "Running Weather: pred_len=${pred_len}, loss=${loss}, seed=${seed}, patchlen=${patchlen}, beta=${beta}"
         echo "======================================================"
 
-        # 定义临时日志文件，以便实时输出并后续抓取指标
+        # Use a temp log for live output and metrics.
         TMP_LOG="tmp_run.log"
 
         CUDA_VISIBLE_DEVICES=$GPU_ID python -u run.py \
@@ -57,14 +57,14 @@ for loss in "${losses[@]}"; do
             --alpha_add_loss ${alpha_add} \
             --beta_add_loss ${beta} | tee $TMP_LOG
 
-        # 使用 Python 正则提取最新的(最后一次打印的)测试集 mse 和 mae
+        # Extract the latest test MSE and MAE with Python regex.
         METRICS=$(python3 -c "
 import re
 import sys
 try:
     with open('$TMP_LOG', 'r') as f:
         log = f.read().lower()
-    # 匹配各类常见输出格式，如 'mse: 0.123', 'mse=0.123' 等
+    # Match common output formats such as 'mse: 0.123' or 'mse=0.123'.
     matches = re.findall(r'mse\s*[:=]?\s*([0-9\.]+).*?mae\s*[:=]?\s*([0-9\.]+)', log)
     if matches:
         print(f'{matches[-1][0]},{matches[-1][1]}')
@@ -79,10 +79,10 @@ except Exception as e:
         
         echo "Extracted -> MSE: $MSE, MAE: $MAE"
         
-        # 写入 CSV 文件
+        # Write CSV row.
         echo "${pred_len},${loss},${seed},${MSE},${MAE}" >> $CSV_FILE
         
-        # 删除临时日志
+        # Remove temp log.
         rm -f $TMP_LOG
     done
   done
@@ -92,7 +92,7 @@ echo "======================================================"
 echo "All experiments finished! Generating LaTeX Table..."
 echo "======================================================"
 
-# 生成用于计算均值/方差并打印 LaTeX 表格的 Python 脚本
+# Generate the Python script for mean/std and LaTeX output.
 cat << 'EOF' > generate_latex_table.py
 import pandas as pd
 import numpy as np

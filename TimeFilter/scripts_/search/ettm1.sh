@@ -88,7 +88,7 @@ print(f"{a:.6f}".rstrip('0').rstrip('.'))
 PY
 )
 
-      # 保持你原始的不同 horizon 配置
+      # Keep horizon-specific settings.
       if [[ "$pred_len" == "96" ]]; then
           dropout=0.3
           base_patch=8

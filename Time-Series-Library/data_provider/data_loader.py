@@ -558,7 +558,7 @@ class SMAPSegLoader(Dataset):
             test_data   = np.load(test_path)
             test_label = np.load(label_path)
 
-        # 标准化
+        # Normalize.
         self.scaler.fit(train_data)
         train_data = self.scaler.transform(train_data)
         test_data  = self.scaler.transform(test_data)

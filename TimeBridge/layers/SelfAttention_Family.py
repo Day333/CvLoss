@@ -49,13 +49,13 @@ class FullAttention(nn.Module):
                 plt.imshow(h_map, cmap='Reds', interpolation='nearest')
                 plt.colorbar()
 
-                # 设置X轴和Y轴的标签为黑体文字
+                # Set axis label fonts.
                 plt.rcParams['font.family'] = 'serif'
                 plt.rcParams['font.serif'] = ['Times New Roman']
                 plt.xlabel('Key Channel', fontsize=14)
                 plt.ylabel('Query Channel', fontsize=14)
 
-                # 设置标题
+                # Set title.
                 # plt.title('Long-Term Correlations', fontdict={'weight': 'bold'}, fontsize=16, color='green')
 
                 plt.tight_layout()
@@ -165,7 +165,7 @@ class ResAttention(nn.Module):
                     plt.imshow(h_map, cmap='Reds', interpolation='nearest')
                     plt.colorbar()
 
-                    # 设置X轴和Y轴的标签为黑体文字
+                    # Set axis label fonts.
                     plt.rcParams['font.family'] = 'serif'
                     plt.rcParams['font.serif'] = ['Times New Roman']
                     plt.xlabel('Key Time Patch', fontsize=14)
@@ -175,7 +175,7 @@ class ResAttention(nn.Module):
                         plt.savefig(f'./time map/{b}_sample_{c}_channel.png')
                     else:
                         plt.savefig(f'./stable time map/{b}_sample_{c}_channel.png')
-                    # 关闭当前图形窗口
+                    # Close current figure.
                     plt.close()
         A = self.dropout(attn_map)
         V = torch.einsum("bhls,bshd->blhd", A, values)

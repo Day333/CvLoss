@@ -222,7 +222,7 @@ class Exp_Long_Term_Forecast(Exp_Basic):
                     idx_i = torch.randint(0, N, (num_pairs,), device=device)
                     idx_j = torch.randint(0, N, (num_pairs,), device=device)
 
-                    # 禁止同变量patch间交互
+                    # Skip same-variable patch pairs.
                     patch_i = idx_i // D
                     patch_j = idx_j // D
 
@@ -232,11 +232,11 @@ class Exp_Long_Term_Forecast(Exp_Basic):
                     mask = ~((var_i == var_j) & (patch_i != patch_j))
 
                     mask = mask & (idx_i != idx_j)
-                    # 禁止同变量patch间交互
+                    # Skip same-variable patch pairs.
 
-                    # 取消相同时间 patch 的交互
+                    # Skip same-time patch pairs.
                     mask = mask & (patch_i != patch_j)
-                    # 取消相同时间 patch 的交互
+                    # Skip same-time patch pairs.
 
                     idx_i = idx_i[mask]
                     idx_j = idx_j[mask]
@@ -279,7 +279,7 @@ class Exp_Long_Term_Forecast(Exp_Basic):
                     idx_i = torch.randint(0, N, (num_pairs,), device=device)
                     idx_j = torch.randint(0, N, (num_pairs,), device=device)
                     
-                    # 禁止同变量patch间交互
+                    # Skip same-variable patch pairs.
                     patch_i = idx_i // D
                     patch_j = idx_j // D
 
@@ -294,14 +294,14 @@ class Exp_Long_Term_Forecast(Exp_Basic):
                     idx_i = idx_i[mask]
                     idx_j = idx_j[mask]
                     
-                    # 禁止同变量patch间交互
+                    # Skip same-variable patch pairs.
 
                     # pred_diff = out_nodes[:, idx_i] - out_nodes[:, idx_j]   # [B, num_pairs, L]
                     # true_diff = y_nodes[:, idx_i]   - y_nodes[:, idx_j]
 
                     # loss_add = (pred_diff - true_diff).abs().mean()
 
-                    # === 最小改动：加入分块 (Chunking) 逻辑 ===
+                    # === Chunked computation ===
                     chunk_size = 512
                     num_valid_pairs = len(idx_i)
 

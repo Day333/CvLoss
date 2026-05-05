@@ -194,7 +194,7 @@ def analyze(df: pd.DataFrame, wide_mode: str = "full", metric: str = "mse"):
                     col_mse = f"mse_{pl}"
                     col_mae = f"mae_{pl}"
                     
-                    # 动态选择评判标准 2
+                    # Select ranking metric.
                     if metric == "mse":
                         target_series = combined[col_mse]
                     elif metric == "mae":
