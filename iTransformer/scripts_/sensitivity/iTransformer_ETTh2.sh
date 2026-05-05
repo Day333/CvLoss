@@ -75,10 +75,10 @@ PY
       model_id="ETTh2_${seq_len}_${pred_len}_fcv_patch${patchlen}_b${beta}"
       log_file="logs/${model_id}.log"
 
-      # ✅ 跳过已跑好的（log存在且含mse/mae行）
+      # Skip finished runs.
       if [ -f "$log_file" ] && is_finished "$log_file"; then
         echo "⏭ Skip (finished): $model_id"
-        echo >&9   # 归还token，否则会占坑导致并行卡死
+        echo >&9   # Release token.
         continue
       fi
 

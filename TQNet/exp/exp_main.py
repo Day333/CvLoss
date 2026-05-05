@@ -307,7 +307,7 @@ class Exp_Main(Exp_Basic):
                     idx_i = idx_i[mask]
                     idx_j = idx_j[mask]
                     
-                    # 禁止同变量patch间交互
+                    # Skip same-variable patch pairs.
 
                     # pred_diff = out_nodes[:, idx_i] - out_nodes[:, idx_j]   # [B, num_pairs, L]
                     # true_diff = y_nodes[:, idx_i]   - y_nodes[:, idx_j]

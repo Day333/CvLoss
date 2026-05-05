@@ -6,7 +6,7 @@ set -e
 ########################################
 
 MAX_JOBS=4
-AVAILABLE_GPUS=(5)     # 你原来固定用 5；多卡就改成 (0 1 2 3 4 5 ...)
+AVAILABLE_GPUS=(5)     # Use more GPUs with values like (0 1 2 3 4 5).
 MAX_RETRIES=1
 NUM_GPUS=${#AVAILABLE_GPUS[@]}
 

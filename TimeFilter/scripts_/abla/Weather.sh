@@ -67,7 +67,7 @@ patchlens=(6)
 
 betas=(0 0.001 0.002 0.005 0.01 0.02 0.05 0.1 0.2 0.5 1.0)
 
-gpu_ptr=0   # <<< 关键：父进程控制
+gpu_ptr=0   # Parent process controls GPU assignment.
 
 submit_job() {
 
@@ -83,7 +83,7 @@ submit_job() {
         return
     fi
 
-    # -------- GPU 在父进程分配 --------
+    # -------- Assign GPU in parent process --------
     gpu_id=${AVAILABLE_GPUS[$gpu_ptr]}
     gpu_ptr=$(( (gpu_ptr + 1) % NUM_GPUS ))
 

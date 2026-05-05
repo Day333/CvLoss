@@ -5,9 +5,9 @@ set -e
 # GPU & Concurrency Config
 ########################################
 
-MAX_JOBS=2                 # 同时运行的最大任务数
-AVAILABLE_GPUS=(1)   # 可用的 GPU 列表
-MAX_RETRIES=1              # 失败重试次数
+MAX_JOBS=2                 # Max concurrent jobs.
+AVAILABLE_GPUS=(1)   # Available GPU list.
+MAX_RETRIES=1              # Retry count.
 NUM_GPUS=${#AVAILABLE_GPUS[@]}
 
 mkdir -p logs

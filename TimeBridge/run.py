@@ -144,5 +144,5 @@ if __name__ == '__main__':
         start_time = time.time()
         exp.test(setting, test=1)
         end_time = time.time()
-        print(f"运行时间: {end_time - start_time:.4f} 秒")
+        print(f"Runtime: {end_time - start_time:.4f} seconds")
         torch.cuda.empty_cache()
