@@ -6,10 +6,36 @@ This repository is an anonymous research release. Author names, affiliations, an
 
 ![CvLoss framework](Doc/framework.png)
 
-## Documents
+## Implement CvLoss
 
-- Paper draft: [Doc/Cross_Variable_Loss.pdf](Doc/Cross_Variable_Loss.pdf)
-- Framework diagram: [Doc/framework.pdf](Doc/framework.pdf)
+Implement CvLoss by adapting the following script in your pipeline:
+
+```python
+loss_tmp = criterion(outputs, batch_y)
+B, T, D = outputs.shape; device = outputs.device
+patch_len = stride = 32
+if (T - patch_len) % stride != 0:
+    raise ValueError("(T - patch_len) % stride != 0")
+
+out_p = outputs.unfold(1, patch_len, stride).permute(0, 1, 3, 2).contiguous()
+y_p = batch_y.unfold(1, patch_len, stride).permute(0, 1, 3, 2).contiguous()
+B, P, L, D = out_p.shape
+out_nodes = out_p.permute(0, 1, 3, 2).reshape(B, P * D, L)
+y_nodes = y_p.permute(0, 1, 3, 2).reshape(B, P * D, L)
+
+N, num_pairs = P * D, (P * D) * (P * D - 1) // 2
+idx_i = torch.randint(0, N, (num_pairs,), device=device)
+idx_j = torch.randint(0, N, (num_pairs,), device=device)
+patch_i, patch_j = idx_i // D, idx_j // D
+var_i, var_j = idx_i % D, idx_j % D
+mask = (idx_i < idx_j) & ~((var_i == var_j) & (patch_i != patch_j))
+idx_i, idx_j = idx_i[mask], idx_j[mask]
+
+pred_diff = out_nodes[:, idx_i] - out_nodes[:, idx_j]
+true_diff = y_nodes[:, idx_i] - y_nodes[:, idx_j]
+loss_add = (pred_diff - true_diff).abs().mean()
+loss = 0.5 * loss_tmp + 0.5 * loss_add
+```
 
 ## Repository Structure
 
