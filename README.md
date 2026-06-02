@@ -13,7 +13,7 @@ Implement CvLoss by adapting the following script in your pipeline:
 ```python
 loss_tmp = criterion(outputs, batch_y)
 B, T, D = outputs.shape; device = outputs.device
-patch_len = stride = 32
+patch_len = stride = 16
 if (T - patch_len) % stride != 0:
     raise ValueError("(T - patch_len) % stride != 0")
 
