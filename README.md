@@ -4,7 +4,7 @@
 
 [![NeurIPS 2026](https://img.shields.io/badge/NeurIPS-2026-8A2BE2?style=for-the-badge)](https://neurips.cc/)
 [![arXiv](https://img.shields.io/badge/arXiv-2608.05742-B31B1B?style=for-the-badge&logo=arxiv&logoColor=white)](https://arxiv.org/abs/2608.05742)
-[![PyTorch](https://img.shields.io/badge/PyTorch-Plug--in_Loss-EE4C2C?style=for-the-badge&logo=pytorch&logoColor=white)](#implement-cvloss)
+[![PyTorch](https://img.shields.io/badge/PyTorch-Plug--in_Loss-EE4C2C?style=for-the-badge&logo=pytorch&logoColor=white)](#1-implement-cvloss)
 [![Code](https://img.shields.io/badge/Code-Official-181717?style=for-the-badge&logo=github&logoColor=white)](https://github.com/Day333/CvLoss)
 
 <br />
@@ -13,7 +13,7 @@
 
 **One structural objective. Multiple forecasting backbones. Consistent multivariate futures.**
 
-[📄 Paper](https://arxiv.org/abs/2608.05742) · [💻 Code](https://github.com/Day333/CvLoss) · [🧩 Plug-in Loss](#implement-cvloss)
+[📄 Paper](https://arxiv.org/abs/2608.05742) · [💻 Code](https://github.com/Day333/CvLoss) · [🧩 Plug-in Loss](#1-implement-cvloss)
 
 </div>
 
@@ -27,7 +27,7 @@ This repository is an anonymous research release. Author names, affiliations, an
 
 ![CvLoss framework](Doc/framework.png)
 
-## Implement CvLoss
+## 1. Implement CvLoss
 
 Implement CvLoss by adapting the following script in your pipeline:
 
@@ -58,7 +58,7 @@ loss_add = (pred_diff - true_diff).abs().mean()
 loss = 0.5 * loss_tmp + 0.5 * loss_add
 ```
 
-## Repository Structure
+## 2. Repository Structure
 
 ```text
 Doc/                    Paper draft and framework figure
@@ -74,7 +74,7 @@ search_config.py        Utility for parsing/searching add-loss experiments
 *.log                   Recorded training logs
 ```
 
-## Environment
+## 3. Environment
 
 The code follows the common PyTorch time-series forecasting stack. A minimal environment is:
 
@@ -86,7 +86,7 @@ pip install torch numpy pandas scikit-learn matplotlib einops tqdm PyWavelets
 
 Some optional backbones may require additional packages. Install them only when running the corresponding model.
 
-## Data
+## 4. Data
 
 Datasets are not included in the repository. Place data under the dataset paths expected by the scripts, for example:
 
@@ -100,7 +100,7 @@ Time-Series-Library/dataset/traffic/traffic.csv
 
 The same layout is used by the adapted backbone folders when their scripts are run from that folder.
 
-## Running CvLoss
+## 5. Running CvLoss
 
 The main CvLoss implementation is integrated into the long-term forecasting training loop in `Time-Series-Library/exp/exp_long_term_forecasting.py`. The key arguments are:
 
@@ -136,7 +136,7 @@ python -u run.py \
   --beta_add_loss 0.5
 ```
 
-## Experiment Scripts
+## 6. Experiment Scripts
 
 Representative sweep scripts are provided under `Time-Series-Library/scripts_/`:
 
@@ -149,7 +149,7 @@ bash scripts_/DLinear/DLinear_cv.sh
 
 Backbone-specific folders also contain scripts for their original and CvLoss-enhanced experiments.
 
-## Results
+## 7. Results
 
 Recorded metric files can be summarized with:
 
@@ -164,7 +164,7 @@ long_term_forecast_...
 mse:<value>, mae:<value>
 ```
 
-## Citation
+## 8. Citation
 
 If you find CvLoss useful in your research, please cite our paper:
 
@@ -178,7 +178,7 @@ If you find CvLoss useful in your research, please cite our paper:
 }
 ```
 
-## Acknowledgements
+## 9. Acknowledgements
 
 We sincerely thank the authors of the following works for advancing learning objectives for time-series forecasting and inspiring this line of research:
 
