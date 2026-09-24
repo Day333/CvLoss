@@ -1,3 +1,24 @@
+<div align="center">
+
+<img src="https://capsule-render.vercel.app/api?type=waving&color=0:0F2027,50:2C5364,100:00C9FF&height=220&section=header&text=CvLoss&fontSize=72&fontColor=FFFFFF&animation=fadeIn&fontAlignY=38&desc=Cross-Variable%20Loss%20for%20Multivariate%20Time%20Series%20Forecasting&descAlignY=62&descSize=18" width="100%" alt="CvLoss header" />
+
+[![NeurIPS 2026](https://img.shields.io/badge/NeurIPS-2026-8A2BE2?style=for-the-badge)](https://neurips.cc/)
+[![arXiv](https://img.shields.io/badge/arXiv-2608.05742-B31B1B?style=for-the-badge&logo=arxiv&logoColor=white)](https://arxiv.org/abs/2608.05742)
+[![PyTorch](https://img.shields.io/badge/PyTorch-Plug--in_Loss-EE4C2C?style=for-the-badge&logo=pytorch&logoColor=white)](#implement-cvloss)
+[![Code](https://img.shields.io/badge/Code-Official-181717?style=for-the-badge&logo=github&logoColor=white)](https://github.com/Day333/CvLoss)
+
+<br />
+
+<img src="https://readme-typing-svg.demolab.com?font=Fira+Code&weight=600&size=22&pause=1000&color=00C9FF&center=true&vCenter=true&width=820&lines=Forecast+together.+Preserve+structure.;A+plug-in+loss+for+multivariate+forecasting.;Accepted+at+NeurIPS+2026." alt="CvLoss typing animation" />
+
+**One structural objective. Multiple forecasting backbones. Consistent multivariate futures.**
+
+[📄 Paper](https://arxiv.org/abs/2608.05742) · [💻 Code](https://github.com/Day333/CvLoss) · [🧩 Plug-in Loss](#implement-cvloss)
+
+</div>
+
+---
+
 # CvLoss
 
 Cross-Variable Loss (CvLoss) is a plug-in structural regularizer for multivariate time series forecasting. It augments the standard direct forecasting objective with residual consistency constraints over cross-variable forecast patches, encouraging the predicted future variables to preserve synchronous and asynchronous relationships.
@@ -142,3 +163,25 @@ The parser expects result blocks in the format written by the training scripts:
 long_term_forecast_...
 mse:<value>, mae:<value>
 ```
+
+## Citation
+
+If you find CvLoss useful in your research, please cite our paper:
+
+```bibtex
+@inproceedings{ding2026cvloss,
+  title     = {Multivariate Time Series Forecasting needs Cross Variable Loss},
+  author    = {Ding, Kuiye and Hu, Yifan and Wang, Hanchen and Xue, Hao},
+  booktitle = {Advances in Neural Information Processing Systems},
+  year      = {2026},
+  url       = {https://arxiv.org/abs/2608.05742}
+}
+```
+
+## Acknowledgements
+
+We sincerely thank the authors of the following works for advancing learning objectives for time-series forecasting and inspiring this line of research:
+
+- **FreDF: Learning to Forecast in the Frequency Domain** — [Paper](https://arxiv.org/abs/2402.02399) · [Code](https://github.com/Master-PLC/FreDF)
+- **Time-o1: Time-Series Forecasting Needs Transformed Label Alignment** — [Paper](https://proceedings.neurips.cc/paper_files/paper/2025/file/0cd62dea69635f4c5b569848267fe5a8-Paper-Conference.pdf) · [Code](https://github.com/Master-PLC/Time-o1)
+- **DistDF: Time-Series Forecasting Needs Joint-Distribution Wasserstein Alignment** — [Paper](https://arxiv.org/abs/2510.24574) · [Code](https://github.com/Master-PLC/DistDF)
