@@ -23,8 +23,6 @@
 
 Cross-Variable Loss (CvLoss) is a plug-in structural regularizer for multivariate time series forecasting. It augments the standard direct forecasting objective with residual consistency constraints over cross-variable forecast patches, encouraging the predicted future variables to preserve synchronous and asynchronous relationships.
 
-This repository is an anonymous research release. Author names, affiliations, and contact information are intentionally omitted from project files.
-
 ![CvLoss framework](Doc/framework.png)
 
 ## 1. Implement CvLoss
